@@ -16,7 +16,7 @@ public class Menu extends JFrame {
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
 	JFrame f, f1;
-	JLabel firstNameLabel, surnameLabel, pPPSLabel, dOBLabel;
+	JLabel firstNameLabel, surnameLabel, pPSLabel, dOBLabel;
 	JTextField firstNameTextField, surnameTextField, pPSTextField, dOBTextField;
 	JLabel customerIDLabel, passwordLabel;
 	JTextField customerIDTextField, passwordTextField;
@@ -24,7 +24,7 @@ public class Menu extends JFrame {
 	Customer e;
 
 	JPanel panel2;
-	JButton add;
+	JButton addButton;
 	String PPS, firstName, surname, DOB, CustomerID;
 
 	public static void main(String[] args) {
@@ -94,7 +94,7 @@ public class Menu extends JFrame {
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.RIGHT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.RIGHT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
+					pPSLabel = new JLabel("PPS Number:", SwingConstants.RIGHT);
 					dOBLabel = new JLabel("Date of birth", SwingConstants.RIGHT);
 					firstNameTextField = new JTextField(20);
 					surnameTextField = new JTextField(20);
@@ -105,13 +105,13 @@ public class Menu extends JFrame {
 					panel.add(firstNameTextField);
 					panel.add(surnameLabel);
 					panel.add(surnameTextField);
-					panel.add(pPPSLabel);
+					panel.add(pPSLabel);
 					panel.add(pPSTextField);
 					panel.add(dOBLabel);
 					panel.add(dOBTextField);
 
 					panel2 = new JPanel();
-					add = new JButton("Add");
+					addButton = new JButton("Add");
 
 					PPS = pPSTextField.getText();
 					firstName = firstNameTextField.getText();
@@ -121,7 +121,7 @@ public class Menu extends JFrame {
 
 					CustomerID = "ID" + PPS;
 
-					add.addActionListener(new ActionListener() {
+					addButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							f1.dispose();
 
@@ -158,7 +158,7 @@ public class Menu extends JFrame {
 						}
 					});
 
-					panel2.add(add);
+					panel2.add(addButton);
 					panel2.add(cancel);
 
 					content.add(panel, BorderLayout.CENTER);
@@ -438,7 +438,7 @@ public class Menu extends JFrame {
 
 							if (customer.getAccounts().isEmpty()) {
 								JOptionPane.showMessageDialog(f,
-										"This customer has no accounts! \n The admin must add acounts to this customer.",
+										"This customer has no accounts! \n The admin must addButton acounts to this customer.",
 										"Oops!", JOptionPane.INFORMATION_MESSAGE);
 								f.dispose();
 								admin();
@@ -570,7 +570,7 @@ public class Menu extends JFrame {
 
 							if (customer.getAccounts().isEmpty()) {
 								JOptionPane.showMessageDialog(f,
-										"This customer has no accounts! \n The admin must add acounts to this customer.",
+										"This customer has no accounts! \n The admin must addButton acounts to this customer.",
 										"Oops!", JOptionPane.INFORMATION_MESSAGE);
 								f.dispose();
 								admin();
@@ -591,17 +591,7 @@ public class Menu extends JFrame {
 										while (loop) {
 											String interestString = JOptionPane.showInputDialog(f,
 													"Enter interest percentage you wish to apply: \n NOTE: Please enter a numerical value. (with no percentage sign) \n E.g: If you wish to apply 8% interest, enter '8'");// the
-																																																							// isNumeric
-																																																							// method
-																																																							// tests
-																																																							// to
-																																																							// see
-																																																							// if
-																																																							// the
-																																																							// string
-																																																							// entered
-																																																							// was
-																																																							// numeric.
+																																																				// numeric.
 											if (isNumeric(interestString)) {
 
 												interest = Double.parseDouble(interestString);
@@ -700,7 +690,7 @@ public class Menu extends JFrame {
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
+					pPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
 					dOBLabel = new JLabel("Date of birth", SwingConstants.LEFT);
 					customerIDLabel = new JLabel("CustomerID:", SwingConstants.LEFT);
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
@@ -719,7 +709,7 @@ public class Menu extends JFrame {
 					textPanel.add(firstNameTextField);
 					textPanel.add(surnameLabel);
 					textPanel.add(surnameTextField);
-					textPanel.add(pPPSLabel);
+					textPanel.add(pPSLabel);
 					textPanel.add(pPSTextField);
 					textPanel.add(dOBLabel);
 					textPanel.add(dOBTextField);
@@ -810,17 +800,19 @@ public class Menu extends JFrame {
 
 				JScrollPane scrollPane = new JScrollPane(textArea);
 				textPanel.add(scrollPane);
+				
+				 double total=0;
 
-				for (int a = 0; a < customerList.size(); a++)// For each customer, for each account, it displays each
-																// transaction.
+				for (int a = 0; a < customerList.size(); a++)//Loops trough each customer
 				{
-					for (int b = 0; b < customerList.get(a).getAccounts().size(); b++) {
+					for (int b = 0; b < customerList.get(a).getAccounts().size(); b++) {//Loops trough each customer account
 						acc = customerList.get(a).getAccounts().get(b);
-						for (int c = 0; c < customerList.get(a).getAccounts().get(b).getTransactionList().size(); c++) {
+						for (int c = 0; c < customerList.get(a).getAccounts().get(b).getTransactionList().size(); c++) {//Loops trough each customer account transaction
 
 							textArea.append(acc.getTransactionList().get(c).toString());
-							// Int total = acc.getTransactionList().get(c).getAmount(); //I was going to use
-							// this to keep a running total but I couldnt get it working.
+							AccountTransaction ac = new AccountTransaction();
+							 total = total + ((AccountTransaction) acc.getTransactionList().get(c)).getAmount(); //I was going to use
+							// this to keep a running total but I couldn't get it working.
 
 						}
 					}
@@ -866,7 +858,7 @@ public class Menu extends JFrame {
 
 					firstNameLabel = new JLabel("First Name:", SwingConstants.LEFT);
 					surnameLabel = new JLabel("Surname:", SwingConstants.LEFT);
-					pPPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
+					pPSLabel = new JLabel("PPS Number:", SwingConstants.LEFT);
 					dOBLabel = new JLabel("Date of birth", SwingConstants.LEFT);
 					customerIDLabel = new JLabel("CustomerID:", SwingConstants.LEFT);
 					passwordLabel = new JLabel("Password:", SwingConstants.LEFT);
@@ -901,7 +893,7 @@ public class Menu extends JFrame {
 					gridPanel.add(firstNameTextField);
 					gridPanel.add(surnameLabel);
 					gridPanel.add(surnameTextField);
-					gridPanel.add(pPPSLabel);
+					gridPanel.add(pPSLabel);
 					gridPanel.add(pPSTextField);
 					gridPanel.add(dOBLabel);
 					gridPanel.add(dOBTextField);
