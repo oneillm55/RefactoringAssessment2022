@@ -113,45 +113,47 @@ public class Menu extends JFrame {
 					panel2 = new JPanel();
 					addButton = new JButton("Add");
 
-					PPS = pPSTextField.getText();
-					firstName = firstNameTextField.getText();
-					surname = surnameTextField.getText();
-					DOB = dOBTextField.getText();
-					password = "";
-
-					CustomerID = "ID" + PPS;
 
 					addButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
+							
 							f1.dispose();
 
-							boolean loop = true;
-							while (loop) {
+							boolean emailValid = false;
+							while (!emailValid) {
 								password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
 
-								if (password.length() != 7)// Making sure password is 7 characters
+								if (password.length() != 7)// Making sure password is at least 7 characters
 								{
 									JOptionPane.showMessageDialog(null, null, "Password must be 7 charatcers long",
 											JOptionPane.OK_OPTION);
 								} else {
-									loop = false;
+									emailValid = true;
+									PPS = pPSTextField.getText();
+									firstName = firstNameTextField.getText();
+									surname = surnameTextField.getText();
+									DOB = dOBTextField.getText();
+
+									CustomerID = "ID" + PPS;
+									
+									ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
+									Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
+											accounts);
+
+									customerList.add(customer);
+
+									JOptionPane.showMessageDialog(f, "CustomerID = " + CustomerID + "\n Password = " + password,
+											"Customer created.", JOptionPane.INFORMATION_MESSAGE);
+									menuStart();
 								}
 							}
 
-							ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
-							Customer customer = new Customer(PPS, surname, firstName, DOB, CustomerID, password,
-									accounts);
-
-							customerList.add(customer);
-
-							JOptionPane.showMessageDialog(f, "CustomerID = " + CustomerID + "\n Password = " + password,
-									"Customer created.", JOptionPane.INFORMATION_MESSAGE);
-							menuStart();
+							
 						}
 					});
 
-					JButton cancel = new JButton("Cancel");
-					cancel.addActionListener(new ActionListener() {
+					JButton cancelButton = new JButton("Cancel");
+					cancelButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							f1.dispose();
 							menuStart();
@@ -159,7 +161,7 @@ public class Menu extends JFrame {
 					});
 
 					panel2.add(addButton);
-					panel2.add(cancel);
+					panel2.add(cancelButton);
 
 					content.add(panel, BorderLayout.CENTER);
 					content.add(panel2, BorderLayout.SOUTH);
@@ -263,7 +265,7 @@ public class Menu extends JFrame {
 					while (loop2) {
 						Object customerPassword = JOptionPane.showInputDialog(f, "Enter Customer Password;");
 
-						if (!customer.getPassword().equals(customerPassword))// check if custoemr password is correct
+						if (!customer.getPassword().equals(customerPassword))// check if customer password is correct
 						{
 							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
 									JOptionPane.YES_NO_OPTION);
@@ -1191,7 +1193,7 @@ public class Menu extends JFrame {
 		});
 		f.setVisible(true);
 
-		if (e.getAccounts().size() == 0) {
+		if (e.getAccounts().isEmpty()) {
 			JOptionPane.showMessageDialog(f,
 					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
 					"Oops!", JOptionPane.INFORMATION_MESSAGE);
