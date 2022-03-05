@@ -21,10 +21,7 @@ public class Menu extends JFrame {
 	JLabel customerIDLabel, passwordLabel;
 	JTextField customerIDTextField, passwordTextField;
 	Container content;
-	Customer e;
-
 	JPanel panel2;
-	JButton addButton;
 	String PPS, firstName, surname, DOB, CustomerID;
 
 	public static void main(String[] args) {
@@ -111,7 +108,8 @@ public class Menu extends JFrame {
 					panel.add(dOBTextField);
 
 					panel2 = new JPanel();
-					addButton = new JButton("Add");
+					JButton addButton = new JButton("Add");
+					JButton cancelButton = new JButton("Cancel");
 
 
 					addButton.addActionListener(new ActionListener() {
@@ -151,7 +149,6 @@ public class Menu extends JFrame {
 						}
 					});
 
-					JButton cancelButton = new JButton("Cancel");
 					cancelButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							f1.dispose();
@@ -174,52 +171,38 @@ public class Menu extends JFrame {
 				// if user select
 				// ADMIN----------------------------------------------------------------------------------------------
 				if (user.equals("Administrator")) {
-					boolean loop = true, loop2 = true;
-					boolean cont = false;
-					while (loop) {
+					boolean adminNameValid = false, adminPasswordValid  = false;
+					while (!adminNameValid) {
 						Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
 
-						if (!adminUsername.equals("admin"))// search admin list for admin with matching admin username
+						if (!adminUsername.equals("admin"))
 						{
 							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Username. Try again?",
 									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-								loop = true;
-							} else if (reply == JOptionPane.NO_OPTION) {
+							if (reply == JOptionPane.NO_OPTION) {
 								f1.dispose();
-								loop = false;
-								loop2 = false;
 								menuStart();
 							}
 						} else {
-							loop = false;
+							adminNameValid=true;
 						}
 					}
 
-					while (loop2) {
+					while (!adminPasswordValid) {
 						Object adminPassword = JOptionPane.showInputDialog(f, "Enter Administrator Password;");
 
-						if (!adminPassword.equals("admin11"))// search admin list for admin with matching admin password
-						{
+						if (!adminPassword.equals("admin11")){
 							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect Password. Try again?",
 									JOptionPane.YES_NO_OPTION);
-							if (reply == JOptionPane.YES_OPTION) {
-
-							} else if (reply == JOptionPane.NO_OPTION) {
+							 if (reply == JOptionPane.NO_OPTION) {
 								f1.dispose();
-								loop2 = false;
 								menuStart();
 							}
 						} else {
-							loop2 = false;
-							cont = true;
+							adminPasswordValid = true;
+							admin();
+							f1.dispose();
 						}
-					}
-
-					if (cont) {
-						f1.dispose();
-						loop = false;
-						admin();
 					}
 				}
 				// ----------------------------------------------------------------------------------------------------------------
