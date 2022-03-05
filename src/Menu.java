@@ -118,9 +118,12 @@ public class Menu extends JFrame {
 						public void actionPerformed(ActionEvent e) {
 							
 							f1.dispose();
+							
+							
+							
 
-							boolean emailValid = false;
-							while (!emailValid) {
+							boolean passwordValid = false;
+							while (!passwordValid) {
 								password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
 
 								if (password.length() != 7)// Making sure password is at least 7 characters
@@ -128,12 +131,12 @@ public class Menu extends JFrame {
 									JOptionPane.showMessageDialog(null, null, "Password must be 7 charatcers long",
 											JOptionPane.OK_OPTION);
 								} else {
-									emailValid = true;
+									passwordValid = true;
 									PPS = pPSTextField.getText();
 									firstName = firstNameTextField.getText();
 									surname = surnameTextField.getText();
 									DOB = dOBTextField.getText();
-
+									
 									CustomerID = "ID" + PPS;
 									
 									ArrayList<CustomerAccount> accounts = new ArrayList<CustomerAccount>();
