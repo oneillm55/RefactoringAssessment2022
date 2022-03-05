@@ -118,10 +118,6 @@ public class Menu extends JFrame {
 						public void actionPerformed(ActionEvent e) {
 							
 							f1.dispose();
-							
-							
-							
-
 							boolean passwordValid = false;
 							while (!passwordValid) {
 								password = JOptionPane.showInputDialog(f, "Enter 7 character Password;");
@@ -147,7 +143,7 @@ public class Menu extends JFrame {
 
 									JOptionPane.showMessageDialog(f, "CustomerID = " + CustomerID + "\n Password = " + password,
 											"Customer created.", JOptionPane.INFORMATION_MESSAGE);
-									menuStart();
+									customer(customer);
 								}
 							}
 
@@ -1141,8 +1137,6 @@ public class Menu extends JFrame {
 		deleteAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				boolean found = true, loop = true;
-
-				{
 					Object customerID = JOptionPane.showInputDialog(f,
 							"Customer ID of Customer from which you wish to delete an account");
 
@@ -1172,7 +1166,7 @@ public class Menu extends JFrame {
 						// to do this)
 					}
 
-				}
+				
 			}
 
 		});
@@ -1184,9 +1178,8 @@ public class Menu extends JFrame {
 		});
 	}
 
-	public void customer(Customer e1) {
+	public void customer(Customer cust) {
 		f = new JFrame("Customer Menu");
-		e = e1;
 		f.setSize(400, 300);
 		f.setLocation(200, 200);
 		f.addWindowListener(new WindowAdapter() {
@@ -1197,7 +1190,7 @@ public class Menu extends JFrame {
 		f.setVisible(true);
 		
 
-		if (e.getAccounts().isEmpty()) {
+		if (cust.getAccounts().isEmpty()) {
 			JOptionPane.showMessageDialog(f,
 					"This customer does not have any accounts yet. \n An admin must create an account for this customer \n for them to be able to use customer functionality. ",
 					"Oops!", JOptionPane.INFORMATION_MESSAGE);
@@ -1217,13 +1210,13 @@ public class Menu extends JFrame {
 			buttonPanel.add(continueButton);
 
 			JComboBox<String> box = new JComboBox<String>();
-			for (int i = 0; i < e.getAccounts().size(); i++) {
-				box.addItem(e.getAccounts().get(i).getNumber());
+			for (int i = 0; i < cust.getAccounts().size(); i++) {
+				box.addItem(cust.getAccounts().get(i).getNumber());
 			}
 
-			for (int i = 0; i < e.getAccounts().size(); i++) {
-				if (e.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-					acc = e.getAccounts().get(i);
+			for (int i = 0; i < cust.getAccounts().size(); i++) {
+				if (cust.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
+					acc = cust.getAccounts().get(i);
 				}
 			}
 
@@ -1334,7 +1327,7 @@ public class Menu extends JFrame {
 							returnButton.addActionListener(new ActionListener() {
 								public void actionPerformed(ActionEvent ae) {
 									f.dispose();
-									customer(e);
+									customer(cust);
 								}
 							});
 						}
@@ -1357,7 +1350,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e);
+										customer(cust);
 										loop = false;
 										on = false;
 									}
@@ -1443,7 +1436,7 @@ public class Menu extends JFrame {
 												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
 												JOptionPane.INFORMATION_MESSAGE);
 										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(e);
+										customer(cust);
 										loop = false;
 										on = false;
 									}
