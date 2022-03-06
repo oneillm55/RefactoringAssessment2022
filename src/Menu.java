@@ -12,7 +12,7 @@ public class Menu extends JFrame {
 
 	private ArrayList<Customer> customerList = new ArrayList<Customer>();
 	private int position = 0;
-	private String password;
+	private String password,euro = "\u20ac";
 	private Customer customer = null;
 	private CustomerAccount acc = new CustomerAccount();
 	JFrame f, f1;
@@ -76,7 +76,6 @@ public class Menu extends JFrame {
 				
 				switch(user){
 	            case "New Customer":
-	                //code for new customer
 	            	f.dispose();
 					f1 = new JFrame("Create New Customer");
 					f1.setSize(400, 300);
@@ -167,7 +166,6 @@ public class Menu extends JFrame {
 	                break;
 	                
 	            case "Administrator":
-	                //code for admin
 	            	boolean adminNameValid = false, adminPasswordValid  = false;
 					while (!adminNameValid) {
 						Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
@@ -203,12 +201,10 @@ public class Menu extends JFrame {
 					}
 	                break;
 	            case "Customer":
-	                //code for customer
 	            	boolean passwordValid = false;
 					boolean found = false;
 					Customer customer = null;
-					//while
-					//
+					
 					while (!found) {
 						Object customerID = JOptionPane.showInputDialog(f, "Enter Customer ID:");
 
@@ -357,7 +353,7 @@ public class Menu extends JFrame {
 							}
 						}
 
-						if (found == false) {
+						if (!found) {
 							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 									JOptionPane.YES_NO_OPTION);
 							if (reply == JOptionPane.YES_OPTION) {
@@ -418,7 +414,6 @@ public class Menu extends JFrame {
 
 								continueButton.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent ae) {
-										String euro = "\u20ac";
 
 										if (acc instanceof CustomerDepositAccount) {
 
@@ -550,7 +545,6 @@ public class Menu extends JFrame {
 
 								continueButton.addActionListener(new ActionListener() {
 									public void actionPerformed(ActionEvent ae) {
-										String euro = "\u20ac";
 										double interest = 0;
 										boolean loop = true;
 
@@ -1202,7 +1196,6 @@ public class Menu extends JFrame {
 						if(account.getNumber().equals(box.getSelectedItem())) {
 							acc = account;
 						}
-						
 					}
 
 					f.dispose();
@@ -1366,7 +1359,6 @@ public class Menu extends JFrame {
 											JOptionPane.INFORMATION_MESSAGE);
 								}
 
-								String euro = "\u20ac";
 								acc.setBalance(acc.getBalance() + balance);
 								// String date = new
 								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
@@ -1455,7 +1447,6 @@ public class Menu extends JFrame {
 									withdraw = 0;
 								}
 
-								String euro = "\u20ac";
 								acc.setBalance(acc.getBalance() - withdraw);
 								// recording transaction:
 								// String date = new
