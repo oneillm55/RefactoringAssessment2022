@@ -867,6 +867,7 @@ public class Menu extends JFrame {
 							// create current account
 							boolean valid = true;
 							double balance = 0;
+							double overdraft = 100;
 							String number = String.valueOf("C" + (customerList.indexOf(customer) + 1) * 10
 									+ (getCust.getAccounts().size() + 1));// this simple algorithm generates the
 																			// account number
@@ -877,7 +878,7 @@ public class Menu extends JFrame {
 							ATMCard atm = new ATMCard(randomPIN, valid);
 
 							CustomerCurrentAccount current = new CustomerCurrentAccount(atm, number, balance,
-									transactionList);
+									transactionList,overdraft);
 
 							getCust.getAccounts().add(current);
 							JOptionPane.showMessageDialog(f, "Account number = " + number + "\n PIN = " + pin,
@@ -1288,18 +1289,7 @@ public class Menu extends JFrame {
 
 							}
 							if (on == true) {
-								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");// the
-																														// isNumeric
-																														// method
-																														// tests
-																														// to
-																														// see
-																														// if
-																														// the
-																														// string
-																														// entered
-																														// was
-																														// numeric.
+								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");
 								if (isNumeric(balanceTest)) {
 
 									balance = Double.parseDouble(balanceTest);
@@ -1375,9 +1365,7 @@ public class Menu extends JFrame {
 							}
 							if (on == true) {
 								String balanceTest = JOptionPane.showInputDialog(f,
-										"Enter amount you wish to withdraw (max 500):");// the isNumeric method tests to
-																						// see if the string entered was
-																						// numeric.
+										"Enter amount you wish to withdraw (max 500):");
 								if (isNumeric(balanceTest)) {
 
 									withdraw = Double.parseDouble(balanceTest);
@@ -1392,10 +1380,21 @@ public class Menu extends JFrame {
 											"Oops!", JOptionPane.INFORMATION_MESSAGE);
 									withdraw = 0;
 								}
-								if (withdraw > acc.getBalance()) {
-									JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
-									withdraw = 0;
+								if (acc instanceof CustomerCurrentAccount) {
+
+									if (withdraw > acc.getBalance()+((CustomerCurrentAccount) acc).getOverdraft()) {
+										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
+												JOptionPane.INFORMATION_MESSAGE);
+										withdraw = 0;
+									}
+									
+								}else {
+
+									if (withdraw > acc.getBalance()) {
+										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
+												JOptionPane.INFORMATION_MESSAGE);
+										withdraw = 0;
+									}
 								}
 
 								acc.setBalance(acc.getBalance() - withdraw);
