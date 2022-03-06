@@ -1249,46 +1249,14 @@ public class Menu extends JFrame {
 					lodgementButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							boolean loop = true;
-							boolean on = true;
+							boolean accountLocked = false;
 							double balance = 0;
 
 							if (acc instanceof CustomerCurrentAccount) {
-								int count = 3;
-								int checkPin = ((CustomerCurrentAccount) acc).getAtm().getPin();
-								loop = true;
-
-								while (loop) {
-									if (count == 0) {
-										JOptionPane.showMessageDialog(f,
-												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
-												JOptionPane.INFORMATION_MESSAGE);
-										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(cust);
-										loop = false;
-										on = false;
-									}
-
-									String Pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
-									int i = Integer.parseInt(Pin);
-
-									if (on) {
-										if (checkPin == i) {
-											loop = false;
-											JOptionPane.showMessageDialog(f, "Pin entry successful", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
-
-										} else {
-											count--;
-											JOptionPane.showMessageDialog(f,
-													"Incorrect pin. " + count + " attempts remaining.", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
-										}
-
-									}
-								}
+								accountLocked = atmLogin(cust);
 
 							}
-							if (on == true) {
+							if (!accountLocked) {
 								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");
 								if (isNumeric(balanceTest)) {
 
@@ -1323,47 +1291,14 @@ public class Menu extends JFrame {
 					withdrawButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							boolean loop = true;
-							boolean on = true;
+							boolean accountLocked = false;
 							double withdraw = 0;
 
 							if (acc instanceof CustomerCurrentAccount) {
-								int count = 3;
-								int checkPin = ((CustomerCurrentAccount) acc).getAtm().getPin();
-								loop = true;
-
-								while (loop) {
-									if (count == 0) {
-										JOptionPane.showMessageDialog(f,
-												"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
-												JOptionPane.INFORMATION_MESSAGE);
-										((CustomerCurrentAccount) acc).getAtm().setValid(false);
-										customer(cust);
-										loop = false;
-										on = false;
-									}
-
-									String Pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
-									int i = Integer.parseInt(Pin);
-
-									if (on) {
-										if (checkPin == i) {
-											loop = false;
-											JOptionPane.showMessageDialog(f, "Pin entry successful", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
-
-										} else {
-											count--;
-											JOptionPane.showMessageDialog(f,
-													"Incorrect pin. " + count + " attempts remaining.", "Pin",
-													JOptionPane.INFORMATION_MESSAGE);
-
-										}
-
-									}
-								}
+								accountLocked = atmLogin(cust);
 
 							}
-							if (on == true) {
+							if (!accountLocked) {
 								String balanceTest = JOptionPane.showInputDialog(f,
 										"Enter amount you wish to withdraw (max 500):");
 								if (isNumeric(balanceTest)) {
@@ -1399,12 +1334,11 @@ public class Menu extends JFrame {
 
 								acc.setBalance(acc.getBalance() - withdraw);
 								Date date = new Date();
-								String date2 = date.toString();
 
 								String type = "Withdraw";
 								double amount = withdraw;
 
-								AccountTransaction transaction = new AccountTransaction(date2, type, amount);
+								AccountTransaction transaction = new AccountTransaction(date.toString(), type, amount);
 								acc.getTransactionList().add(transaction);
 
 								JOptionPane.showMessageDialog(f, withdraw + euro + " withdrawn.", "Withdraw",
@@ -1481,5 +1415,44 @@ public class Menu extends JFrame {
 		dOBTextField.setText(customerList.get(position).getDOB());
 		customerIDTextField.setText(customerList.get(position).getCustomerID());
 		passwordTextField.setText(customerList.get(position).getPassword());
+	}
+	
+	public boolean atmLogin(Customer cust) {
+
+		boolean accountLocked = false;
+		int count = 3;
+		int checkPin = ((CustomerCurrentAccount) acc).getAtm().getPin();
+		boolean loop = true;
+
+		while (loop) {
+			if (count == 0) {
+				JOptionPane.showMessageDialog(f,
+						"Pin entered incorrectly 3 times. ATM card locked.", "Pin",
+						JOptionPane.INFORMATION_MESSAGE);
+				((CustomerCurrentAccount) acc).getAtm().setValid(false);
+				customer(cust);
+				loop = false;
+				accountLocked = true;
+			}
+
+			String Pin = JOptionPane.showInputDialog(f, "Enter 4 digit PIN;");
+			int i = Integer.parseInt(Pin);
+
+			if (!accountLocked) {
+				if (checkPin == i) {
+					loop = false;
+					JOptionPane.showMessageDialog(f, "Pin entry successful", "Pin",
+							JOptionPane.INFORMATION_MESSAGE);
+
+				} else {
+					count--;
+					JOptionPane.showMessageDialog(f,
+							"Incorrect pin. " + count + " attempts remaining.", "Pin",
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+
+			}
+		}
+		return accountLocked;
 	}
 }
