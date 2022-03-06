@@ -685,14 +685,12 @@ public class Menu extends JFrame {
 					customerIDTextField.setText(customer.getCustomerID());
 					passwordTextField.setText(customer.getPassword());
 
-					// JLabel label1 = new JLabel("Edit customer details below. The save");
 
 					JButton saveButton = new JButton("Save");
 					JButton cancelButton = new JButton("Exit");
 
 					cancelPanel.add(cancelButton, BorderLayout.SOUTH);
 					cancelPanel.add(saveButton, BorderLayout.SOUTH);
-					// content.removeAll();
 					Container content = f.getContentPane();
 					content.setLayout(new GridLayout(2, 1));
 					content.add(textPanel, BorderLayout.NORTH);
@@ -805,7 +803,7 @@ public class Menu extends JFrame {
 					admin();
 				} else {
 
-					JButton first, previous, next, last, cancel;
+					JButton firstButton, previousButton, nextButton, lastButton, cancelButton;
 					JPanel gridPanel, buttonPanel, cancelPanel;
 
 					Container content = getContentPane();
@@ -829,11 +827,11 @@ public class Menu extends JFrame {
 					customerIDTextField = new JTextField(20);
 					passwordTextField = new JTextField(20);
 
-					first = new JButton("First");
-					previous = new JButton("Previous");
-					next = new JButton("Next");
-					last = new JButton("Last");
-					cancel = new JButton("Cancel");
+					firstButton = new JButton("First");
+					previousButton = new JButton("Previous");
+					nextButton = new JButton("Next");
+					lastButton = new JButton("Last");
+					cancelButton = new JButton("Cancel");
 
 					firstNameTextField.setText(customerList.get(0).getFirstName());
 					surnameTextField.setText(customerList.get(0).getSurname());
@@ -862,17 +860,17 @@ public class Menu extends JFrame {
 					gridPanel.add(passwordLabel);
 					gridPanel.add(passwordTextField);
 
-					buttonPanel.add(first);
-					buttonPanel.add(previous);
-					buttonPanel.add(next);
-					buttonPanel.add(last);
+					buttonPanel.add(firstButton);
+					buttonPanel.add(previousButton);
+					buttonPanel.add(nextButton);
+					buttonPanel.add(lastButton);
 
-					cancelPanel.add(cancel);
+					cancelPanel.add(cancelButton);
 
 					content.add(gridPanel, BorderLayout.NORTH);
 					content.add(buttonPanel, BorderLayout.CENTER);
 					content.add(cancelPanel, BorderLayout.AFTER_LAST_LINE);
-					first.addActionListener(new ActionListener() {
+					firstButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							position = 0;
 							firstNameTextField.setText(customerList.get(0).getFirstName());
@@ -884,7 +882,7 @@ public class Menu extends JFrame {
 						}
 					});
 
-					previous.addActionListener(new ActionListener() {
+					previousButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 
 							if (position < 1) {
@@ -902,7 +900,7 @@ public class Menu extends JFrame {
 						}
 					});
 
-					next.addActionListener(new ActionListener() {
+					nextButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 
 							if (position == customerList.size() - 1) {
@@ -921,7 +919,7 @@ public class Menu extends JFrame {
 						}
 					});
 
-					last.addActionListener(new ActionListener() {
+					lastButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 
 							position = customerList.size() - 1;
@@ -935,7 +933,7 @@ public class Menu extends JFrame {
 						}
 					});
 
-					cancel.addActionListener(new ActionListener() {
+					cancelButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 							dispose();
 							admin();
@@ -1094,6 +1092,7 @@ public class Menu extends JFrame {
 		});
 
 		deleteAccount.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent ae) {
 				boolean found = true, loop = true;
 					Object customerID = JOptionPane.showInputDialog(f,
@@ -1129,6 +1128,7 @@ public class Menu extends JFrame {
 			}
 
 		});
+	
 		returnButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				f.dispose();
@@ -1448,9 +1448,6 @@ public class Menu extends JFrame {
 								}
 
 								acc.setBalance(acc.getBalance() - withdraw);
-								// recording transaction:
-								// String date = new
-								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 								Date date = new Date();
 								String date2 = date.toString();
 
@@ -1488,5 +1485,42 @@ public class Menu extends JFrame {
 			return false;
 		}
 		return true;
+	}
+	
+	public Customer getCustomer ( ) {
+		Customer c = new Customer();
+		
+		boolean loop = true;
+
+		boolean customerFound = false;
+
+		while (loop) {
+			Object customerID = JOptionPane.showInputDialog(f,
+					"Enter Customer ID:");
+
+			for (Customer aCustomer : customerList) {
+
+				if (aCustomer.getCustomerID().equals(customerID)) {
+					customerFound = true;
+					c = aCustomer;
+				}
+			}
+
+			if (!customerFound) {
+				int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
+						JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					loop = true;
+				} else if (reply == JOptionPane.NO_OPTION) {
+					f.dispose();
+					loop = false;
+
+					admin();
+				}
+			} else {
+			}
+			}
+		return c;
+		
 	}
 }
