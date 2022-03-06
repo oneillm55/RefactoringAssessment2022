@@ -220,7 +220,7 @@ public class Menu extends JFrame {
 							}
 						}
 
-						if (found == false) {
+						if (!found) {
 							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
 									JOptionPane.YES_NO_OPTION);
 							if (reply == JOptionPane.NO_OPTION) {
@@ -231,12 +231,12 @@ public class Menu extends JFrame {
 						} 
 
 					}
+					
 
 					while (!passwordValid) {
 						Object customerPassword = JOptionPane.showInputDialog(f, "Enter Customer Password;");
 
-						if (!customer.getPassword().equals(customerPassword))// check if customer password is correct
-						{
+						if (!customer.getPassword().equals(customerPassword)){
 							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
 									JOptionPane.YES_NO_OPTION);
 							 if (reply == JOptionPane.NO_OPTION) {
@@ -246,7 +246,7 @@ public class Menu extends JFrame {
 							}
 						} else {
 							customer(customer);
-							f.dispose();
+							passwordValid = true;
 						}
 					}
 	                break;
@@ -1175,15 +1175,11 @@ public class Menu extends JFrame {
 			buttonPanel.add(continueButton);
 
 			JComboBox<String> box = new JComboBox<String>();
-			for (int i = 0; i < cust.getAccounts().size(); i++) {
-				box.addItem(cust.getAccounts().get(i).getNumber());
+			for(CustomerAccount account: cust.getAccounts()) {
+				box.addItem(account.getNumber());
+				
 			}
-
-			for (int i = 0; i < cust.getAccounts().size(); i++) {
-				if (cust.getAccounts().get(i).getNumber() == box.getSelectedItem()) {
-					acc = cust.getAccounts().get(i);
-				}
-			}
+			
 
 			boxPanel.add(box);
 			content = f.getContentPane();
@@ -1201,6 +1197,13 @@ public class Menu extends JFrame {
 
 			continueButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
+					
+					for(CustomerAccount account: cust.getAccounts()) {
+						if(account.getNumber().equals(box.getSelectedItem())) {
+							acc = account;
+						}
+						
+					}
 
 					f.dispose();
 
