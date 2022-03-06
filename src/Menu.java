@@ -73,11 +73,11 @@ public class Menu extends JFrame {
 		continueButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				String user = userType.getSelection().getActionCommand();
-
-				// if user selects NEW
-				// CUSTOMER--------------------------------------------------------------------------------------
-				if (user.equals("New Customer")) {
-					f.dispose();
+				
+				switch(user){
+	            case "New Customer":
+	                //code for new customer
+	            	f.dispose();
 					f1 = new JFrame("Create New Customer");
 					f1.setSize(400, 300);
 					f1.setLocation(200, 200);
@@ -107,7 +107,7 @@ public class Menu extends JFrame {
 					panel.add(dOBLabel);
 					panel.add(dOBTextField);
 
-					panel2 = new JPanel();
+					JPanel panel2 = new JPanel();
 					JButton addButton = new JButton("Add");
 					JButton cancelButton = new JButton("Cancel");
 
@@ -164,14 +164,11 @@ public class Menu extends JFrame {
 
 					f1.setVisible(true);
 
-				}
-
-				// ------------------------------------------------------------------------------------------------------------------
-
-				// if user select
-				// ADMIN----------------------------------------------------------------------------------------------
-				if (user.equals("Administrator")) {
-					boolean adminNameValid = false, adminPasswordValid  = false;
+	                break;
+	                
+	            case "Administrator":
+	                //code for admin
+	            	boolean adminNameValid = false, adminPasswordValid  = false;
 					while (!adminNameValid) {
 						Object adminUsername = JOptionPane.showInputDialog(f, "Enter Administrator Username:");
 
@@ -201,16 +198,13 @@ public class Menu extends JFrame {
 						} else {
 							adminPasswordValid = true;
 							admin();
-							f1.dispose();
+							//f1.dispose();
 						}
 					}
-				}
-				// ----------------------------------------------------------------------------------------------------------------
-
-				// if user selects CUSTOMER
-				// ----------------------------------------------------------------------------------------
-				if (user.equals("Customer")) {
-					boolean passwordValid = false;
+	                break;
+	            case "Customer":
+	                //code for customer
+	            	boolean passwordValid = false;
 					boolean found = false;
 					Customer customer = null;
 					//while
@@ -246,7 +240,7 @@ public class Menu extends JFrame {
 							int reply = JOptionPane.showConfirmDialog(null, null, "Incorrect password. Try again?",
 									JOptionPane.YES_NO_OPTION);
 							 if (reply == JOptionPane.NO_OPTION) {
-								 passwordValid = true;
+								passwordValid = true;
 								f.dispose();
 								menuStart();
 							}
@@ -255,7 +249,10 @@ public class Menu extends JFrame {
 							f.dispose();
 						}
 					}
+	                break;
 				}
+
+			
 			}
 		});
 		f.setVisible(true);
