@@ -37,4 +37,14 @@ public void setAtm(ATMCard atm)
 	this.atm = atm;
 }
 
+public boolean validateWithdrawl(double amount) {
+	if(!(amount>this.balance+this.overdraft)) {
+		return true;
+		
+	}else {
+		return false;
+	}
+	
+}
+
 }

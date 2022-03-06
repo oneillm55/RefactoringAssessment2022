@@ -908,87 +908,6 @@ public class Menu extends JFrame {
 							admin();
 						}
 					}
-//					boolean loop = true;
-//
-//					boolean found = false;
-//
-//					while (loop) {
-//						Object customerID = JOptionPane.showInputDialog(f,
-//								"Customer ID of Customer You Wish to Add an Account to:");
-//
-//						for (Customer aCustomer : customerList) {
-//
-//							if (aCustomer.getCustomerID().equals(customerID)) {
-//								found = true;
-//								customer = aCustomer;
-//							}
-//						}
-//
-//						if (found == false) {
-//							int reply = JOptionPane.showConfirmDialog(null, null, "User not found. Try again?",
-//									JOptionPane.YES_NO_OPTION);
-//							if (reply == JOptionPane.YES_OPTION) {
-//								loop = true;
-//							} else if (reply == JOptionPane.NO_OPTION) {
-//								f.dispose();
-//								loop = false;
-//
-//								admin();
-//							}
-//						} else {
-//							loop = false;
-//							// a combo box in an dialog box that asks the admin what type of account they
-//							// wish to create (deposit/current)
-//							String[] choices = { "Current Account", "Deposit Account" };
-//							String account = (String) JOptionPane.showInputDialog(null, "Please choose account type",
-//									"Account Type", JOptionPane.QUESTION_MESSAGE, null, choices, choices[1]);
-//
-//							if (account.equals("Current Account")) {
-//								// create current account
-//								boolean valid = true;
-//								double balance = 0;
-//								String number = String.valueOf("C" + (customerList.indexOf(customer) + 1) * 10
-//										+ (customer.getAccounts().size() + 1));// this simple algorithm generates the
-//																				// account number
-//								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
-//								int randomPIN = (int) (Math.random() * 9000) + 1000;
-//								String pin = String.valueOf(randomPIN);
-//
-//								ATMCard atm = new ATMCard(randomPIN, valid);
-//
-//								CustomerCurrentAccount current = new CustomerCurrentAccount(atm, number, balance,
-//										transactionList);
-//
-//								customer.getAccounts().add(current);
-//								JOptionPane.showMessageDialog(f, "Account number = " + number + "\n PIN = " + pin,
-//										"Account created.", JOptionPane.INFORMATION_MESSAGE);
-//
-//								f.dispose();
-//								admin();
-//							}
-//
-//							if (account.equals("Deposit Account")) {
-//								// create deposit account
-//
-//								double balance = 0, interest = 0;
-//								String number = String.valueOf("D" + (customerList.indexOf(customer) + 1) * 10
-//										+ (customer.getAccounts().size() + 1));// this simple algorithm generates the
-//																				// account number
-//								ArrayList<AccountTransaction> transactionList = new ArrayList<AccountTransaction>();
-//
-//								CustomerDepositAccount deposit = new CustomerDepositAccount(interest, number, balance,
-//										transactionList);
-//
-//								customer.getAccounts().add(deposit);
-//								JOptionPane.showMessageDialog(f, "Account number = " + number, "Account created.",
-//										JOptionPane.INFORMATION_MESSAGE);
-//
-//								f.dispose();
-//								admin();
-//							}
-//
-//						}
-//					}
 				}
 			}
 		});
@@ -1248,7 +1167,6 @@ public class Menu extends JFrame {
 
 					lodgementButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-							boolean loop = true;
 							boolean accountLocked = false;
 							double balance = 0;
 
@@ -1261,7 +1179,6 @@ public class Menu extends JFrame {
 								if (isNumeric(balanceTest)) {
 
 									balance = Double.parseDouble(balanceTest);
-									loop = false;
 
 								} else {
 									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
@@ -1269,14 +1186,11 @@ public class Menu extends JFrame {
 								}
 
 								acc.setBalance(acc.getBalance() + balance);
-								// String date = new
-								// SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 								Date date = new Date();
-								String date2 = date.toString();
 								String type = "Lodgement";
 								double amount = balance;
 
-								AccountTransaction transaction = new AccountTransaction(date2, type, amount);
+								AccountTransaction transaction = new AccountTransaction(date.toString(), type, amount);
 								acc.getTransactionList().add(transaction);
 
 								JOptionPane.showMessageDialog(f, balance + euro + " added do you account!", "Lodgement",
@@ -1290,7 +1204,6 @@ public class Menu extends JFrame {
 
 					withdrawButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-							boolean loop = true;
 							boolean accountLocked = false;
 							double withdraw = 0;
 
@@ -1304,7 +1217,6 @@ public class Menu extends JFrame {
 								if (isNumeric(balanceTest)) {
 
 									withdraw = Double.parseDouble(balanceTest);
-									loop = false;
 
 								} else {
 									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
@@ -1315,36 +1227,28 @@ public class Menu extends JFrame {
 											"Oops!", JOptionPane.INFORMATION_MESSAGE);
 									withdraw = 0;
 								}
-								if (acc instanceof CustomerCurrentAccount) {
-
-									if (withdraw > acc.getBalance()+((CustomerCurrentAccount) acc).getOverdraft()) {
+									if (acc.validateWithdrawl(withdraw)) {
 										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
 												JOptionPane.INFORMATION_MESSAGE);
 										withdraw = 0;
-									}
-									
-								}else {
+									}else {
 
-									if (withdraw > acc.getBalance()) {
-										JOptionPane.showMessageDialog(f, "Insufficient funds.", "Oops!",
+
+										acc.setBalance(acc.getBalance() - withdraw);
+										Date date = new Date();
+
+										String type = "Withdraw";
+										double amount = withdraw;
+
+										AccountTransaction transaction = new AccountTransaction(date.toString(), type, amount);
+										acc.getTransactionList().add(transaction);
+
+										JOptionPane.showMessageDialog(f, withdraw + euro + " withdrawn.", "Withdraw",
 												JOptionPane.INFORMATION_MESSAGE);
-										withdraw = 0;
+										JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance() + euro, "Withdraw",
+												JOptionPane.INFORMATION_MESSAGE);
+										
 									}
-								}
-
-								acc.setBalance(acc.getBalance() - withdraw);
-								Date date = new Date();
-
-								String type = "Withdraw";
-								double amount = withdraw;
-
-								AccountTransaction transaction = new AccountTransaction(date.toString(), type, amount);
-								acc.getTransactionList().add(transaction);
-
-								JOptionPane.showMessageDialog(f, withdraw + euro + " withdrawn.", "Withdraw",
-										JOptionPane.INFORMATION_MESSAGE);
-								JOptionPane.showMessageDialog(f, "New balance = " + acc.getBalance() + euro, "Withdraw",
-										JOptionPane.INFORMATION_MESSAGE);
 							}
 
 						}

@@ -59,6 +59,16 @@ public class CustomerAccount  {
 		this.transactionList = transactionList;
 	}
 	
+	public boolean validateWithdrawl(double amount) {
+		if(!(amount>this.balance)) {
+			return true;
+			
+		}else {
+			return false;
+		}
+		
+	}
+	
 	
 	
 }
