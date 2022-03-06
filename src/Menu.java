@@ -30,12 +30,6 @@ public class Menu extends JFrame {
 	}
 
 	public void menuStart() {
-		/*
-		 * The menuStart method asks the user if they are a new customer, an existing
-		 * customer or an admin. It will then start the create customer process if they
-		 * are a new customer, or will ask them to log in if they are an existing
-		 * customer or admin.
-		 */
 
 		f = new JFrame("User Type");
 		f.setSize(400, 300);
@@ -196,7 +190,6 @@ public class Menu extends JFrame {
 						} else {
 							adminPasswordValid = true;
 							admin();
-							//f1.dispose();
 						}
 					}
 	                break;
@@ -708,9 +701,7 @@ public class Menu extends JFrame {
 
 				Container content = f.getContentPane();
 				content.setLayout(new GridLayout(1, 1));
-				// content.add(label1);
 				content.add(textPanel);
-				// content.add(returnPanel);
 
 				returnButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
@@ -1176,14 +1167,10 @@ public class Menu extends JFrame {
 							}
 							if (!accountLocked) {
 								String balanceTest = JOptionPane.showInputDialog(f, "Enter amount you wish to lodge:");
-								if (isNumeric(balanceTest)) {
-
-									balance = Double.parseDouble(balanceTest);
-
-								} else {
-									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
-								}
+								double check=checkNumber(balanceTest);
+								if(check>0)	{
+									balance=check;
+								};
 
 								acc.setBalance(acc.getBalance() + balance);
 								Date date = new Date();
@@ -1214,14 +1201,13 @@ public class Menu extends JFrame {
 							if (!accountLocked) {
 								String balanceTest = JOptionPane.showInputDialog(f,
 										"Enter amount you wish to withdraw (max 500):");
-								if (isNumeric(balanceTest)) {
-
-									withdraw = Double.parseDouble(balanceTest);
-
-								} else {
-									JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
-											JOptionPane.INFORMATION_MESSAGE);
-								}
+								
+								double check=checkNumber(balanceTest);
+								if(check>0)	{
+									withdraw=check;
+									};
+								
+								
 								if (withdraw > 500) {
 									JOptionPane.showMessageDialog(f, "500 is the maximum you can withdraw at a time.",
 											"Oops!", JOptionPane.INFORMATION_MESSAGE);
@@ -1265,7 +1251,7 @@ public class Menu extends JFrame {
 		}
 	}
 
-	public static boolean isNumeric(String str) // a method that tests if a string is numeric
+	public static boolean isNumeric(String str)
 	{
 		try {
 			double d = Double.parseDouble(str);
@@ -1358,5 +1344,18 @@ public class Menu extends JFrame {
 			}
 		}
 		return accountLocked;
+	}
+	
+	public double checkNumber(String s) {
+		if (isNumeric(s)) {
+
+			return Double.parseDouble(s);
+
+		} else {
+			JOptionPane.showMessageDialog(f, "You must enter a numerical value!", "Oops!",
+					JOptionPane.INFORMATION_MESSAGE);
+
+			return -1; //ie if the method returns a negative number the check is invalid
+		}
 	}
 }
