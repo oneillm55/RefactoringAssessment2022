@@ -872,30 +872,16 @@ public class Menu extends JFrame {
 					content.add(cancelPanel, BorderLayout.AFTER_LAST_LINE);
 					firstButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
-							position = 0;
-							firstNameTextField.setText(customerList.get(0).getFirstName());
-							surnameTextField.setText(customerList.get(0).getSurname());
-							pPSTextField.setText(customerList.get(0).getPPS());
-							dOBTextField.setText(customerList.get(0).getDOB());
-							customerIDTextField.setText(customerList.get(0).getCustomerID());
-							passwordTextField.setText(customerList.get(0).getPassword());
+							setFeilds(0);
 						}
 					});
 
 					previousButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 
-							if (position < 1) {
-								// don't do anything
-							} else {
+							if (position >= 1) {
 								position = position - 1;
-
-								firstNameTextField.setText(customerList.get(position).getFirstName());
-								surnameTextField.setText(customerList.get(position).getSurname());
-								pPSTextField.setText(customerList.get(position).getPPS());
-								dOBTextField.setText(customerList.get(position).getDOB());
-								customerIDTextField.setText(customerList.get(position).getCustomerID());
-								passwordTextField.setText(customerList.get(position).getPassword());
+								setFeilds(position);
 							}
 						}
 					});
@@ -903,18 +889,10 @@ public class Menu extends JFrame {
 					nextButton.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ae) {
 
-							if (position == customerList.size() - 1) {
-								// don't do anything
-							} else {
+							if (position != customerList.size() - 1) {
 								position = position + 1;
-
-								firstNameTextField.setText(customerList.get(position).getFirstName());
-								surnameTextField.setText(customerList.get(position).getSurname());
-								pPSTextField.setText(customerList.get(position).getPPS());
-								dOBTextField.setText(customerList.get(position).getDOB());
-								customerIDTextField.setText(customerList.get(position).getCustomerID());
-								passwordTextField.setText(customerList.get(position).getPassword());
-							}
+								setFeilds(position);
+							} 
 
 						}
 					});
@@ -923,13 +901,7 @@ public class Menu extends JFrame {
 						public void actionPerformed(ActionEvent ae) {
 
 							position = customerList.size() - 1;
-
-							firstNameTextField.setText(customerList.get(position).getFirstName());
-							surnameTextField.setText(customerList.get(position).getSurname());
-							pPSTextField.setText(customerList.get(position).getPPS());
-							dOBTextField.setText(customerList.get(position).getDOB());
-							customerIDTextField.setText(customerList.get(position).getCustomerID());
-							passwordTextField.setText(customerList.get(position).getPassword());
+							setFeilds(position);
 						}
 					});
 
@@ -1522,5 +1494,14 @@ public class Menu extends JFrame {
 			}
 		return c;
 		
+	}
+	
+	public void setFeilds(int position) {
+		firstNameTextField.setText(customerList.get(position).getFirstName());
+		surnameTextField.setText(customerList.get(position).getSurname());
+		pPSTextField.setText(customerList.get(position).getPPS());
+		dOBTextField.setText(customerList.get(position).getDOB());
+		customerIDTextField.setText(customerList.get(position).getCustomerID());
+		passwordTextField.setText(customerList.get(position).getPassword());
 	}
 }
